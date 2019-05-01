@@ -85,6 +85,38 @@
                                 </ul>
                             </li>
 
+                            <li>
+                                <a href="javascript: void(0);">
+                                    <i class="fe-grid"></i>
+                                    <span> Blog Category </span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <ul class="nav-second-level" aria-expanded="false">
+                                    <li>
+                                        <a href="/admin/blog/category">Blog Category List</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/blog/category/create">Create Blog Category</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);">
+                                    <i class="fe-grid"></i>
+                                    <span> Blogs </span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <ul class="nav-second-level" aria-expanded="false">
+                                    <li>
+                                        <a href="/admin/blog">Blog List</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/blog/create">Create Blog</a>
+                                    </li>
+                                </ul>
+                            </li>
+
                         </ul>
 
                     </div>
@@ -322,7 +354,7 @@
         <script src="https://cdn.ckeditor.com/4.11.1/standard/ckeditor.js"></script>
 
         <script>
-            CKEDITOR.replace( 'content' );
+            CKEDITOR.replace( 'description' );
         </script>
 
     </body>

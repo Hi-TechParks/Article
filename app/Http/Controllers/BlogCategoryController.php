@@ -4,9 +4,21 @@ namespace App\Http\Controllers;
 
 use App\BlogCategory;
 use Illuminate\Http\Request;
+use Session;
+use Auth;
 
 class BlogCategoryController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +27,9 @@ class BlogCategoryController extends Controller
     public function index()
     {
         //
+        $blog_categories = BlogCategory::get();
+        //
+        return view('admin.blog_cate.blog_cate_list')->with('blog_categories', $blog_categories);
     }
 
     /**
@@ -25,6 +40,7 @@ class BlogCategoryController extends Controller
     public function create()
     {
         //
+        return view('admin.blog_cate.blog_cate_create');
     }
 
     /**
@@ -36,6 +52,20 @@ class BlogCategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'title' => 'required',
+        ]);
+
+        $blogCategory = new BlogCategory;
+        $blogCategory->title = $request->title;
+        $blogCategory->description = $request->description;
+        $blogCategory->status = 1;
+        $blogCategory->created_by = Auth::user()->id;
+        $blogCategory->save();
+
+        Session::flash('success', 'Blog Category Created Successfully');
+        //
+        return redirect()->route('blog.cate.create', ['success' => 'Blog Category Created Successfully']);
     }
 
     /**
@@ -44,7 +74,7 @@ class BlogCategoryController extends Controller
      * @param  \App\BlogCategory  $blogCategory
      * @return \Illuminate\Http\Response
      */
-    public function show(BlogCategory $blogCategory)
+    public function show($id)
     {
         //
     }
@@ -55,9 +85,14 @@ class BlogCategoryController extends Controller
      * @param  \App\BlogCategory  $blogCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(BlogCategory $blogCategory)
+    public function edit($id)
     {
+        $blogCategory = BlogCategory::find($id);
+        // dd($blogCategory);
+        // $blog_categories = BlogCategory::where('id', $id)->get();
+
         //
+        return view('admin.blog_cate.blog_cate_edit')->with('blog_category', $blogCategory);
     }
 
     /**
@@ -67,9 +102,23 @@ class BlogCategoryController extends Controller
      * @param  \App\BlogCategory  $blogCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BlogCategory $blogCategory)
+    public function update(Request $request, $id)
     {
         //
+        $request->validate([
+            'title' => 'required',
+        ]);
+
+        $blogCategory = BlogCategory::find($id);
+        $blogCategory->title = $request->title;
+        $blogCategory->description = $request->description;
+        $blogCategory->status = 1;
+        $blogCategory->updated_by = Auth::user()->id;
+        $blogCategory->save();
+
+        Session::flash('success', 'Blog Category Updated Successfully');
+        //
+        return redirect()->route('blog.cate.edit', [$id, 'success' => 'Blog Category Updated Successfully']);
     }
 
     /**
@@ -78,8 +127,14 @@ class BlogCategoryController extends Controller
      * @param  \App\BlogCategory  $blogCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BlogCategory $blogCategory)
+    public function destroy($id)
     {
         //
+        $blogCategory = BlogCategory::find($id);
+        $blogCategory->delete();
+
+        Session::flash('success', 'Blog Category Deleted Successfully');
+        //
+        return redirect()->route('blog.cate.index', ['success' => 'Blog Category Deleted Successfully']);
     }
 }
